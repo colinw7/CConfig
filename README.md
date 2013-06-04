@@ -1,0 +1,4 @@
+CConfig
+=======
+
+Application Configuration Library
