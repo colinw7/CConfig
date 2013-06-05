@@ -1,18 +1,12 @@
 #include <CConfigFile.h>
 #include <CConfig.h>
 
+#include <CFuncs.h>
 #include <CFile.h>
 #include <CStrUtil.h>
 
 #include <iostream>
 #include <algorithm>
-
-struct CDeletePointer {
-  template<class T>
-  void operator()(const T *p) const {
-    delete p;
-  }
-};
 
 CConfigFile::
 CConfigFile()

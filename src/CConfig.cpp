@@ -1,6 +1,7 @@
 #include <CConfig.h>
 #include <CConfigFile.h>
 
+#include <CFuncs.h>
 #include <CDir.h>
 #include <CFile.h>
 #include <CStrUtil.h>
@@ -11,13 +12,6 @@
 
 #define CTHROW(m) \
 { std::cerr << m << std::endl; assert(false); }
-
-struct CDeletePointer {
-  template<class T>
-  void operator()(const T *p) const {
-    delete p;
-  }
-};
 
 CConfig::
 CConfig(const std::string &name) :
