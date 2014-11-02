@@ -1,17 +1,13 @@
 #include <CConfig.h>
 #include <CConfigFile.h>
 
-#include <CFuncs.h>
 #include <CDir.h>
 #include <CFile.h>
 #include <CStrUtil.h>
+#include <CThrow.h>
+#include <CFuncs.h>
 
-#include <iostream>
-#include <cassert>
 #include <algorithm>
-
-#define CTHROW(m) \
-{ std::cerr << m << std::endl; assert(false); }
 
 CConfig::
 CConfig(const std::string &name) :

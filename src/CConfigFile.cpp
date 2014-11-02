@@ -1,11 +1,11 @@
 #include <CConfigFile.h>
 #include <CConfig.h>
 
-#include <CFuncs.h>
 #include <CFile.h>
 #include <CStrUtil.h>
+#include <CEnv.h>
+#include <CFuncs.h>
 
-#include <iostream>
 #include <algorithm>
 
 CConfigFile::
@@ -66,7 +66,7 @@ readFile(const std::string &fileName)
 
             envname = envname.substr(0, pos2);
 
-            std::string envval = getenv(envname.c_str());
+            std::string envval = CEnvInst.get(envname);
 
             value = lhs + envval + rhs;
           }
