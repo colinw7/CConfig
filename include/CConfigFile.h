@@ -12,9 +12,6 @@ class CConfigFileNameVal;
 class CConfigFile {
   typedef std::list<CConfigFileSection *> CConfigFileSectionList;
 
- private:
-  CConfigFileSectionList sections_;
-
  public:
   CConfigFile();
  ~CConfigFile();
@@ -36,14 +33,15 @@ class CConfigFile {
  private:
   CConfigFileSection *addSection(const std::string &name);
   CConfigFileSection *getSection(const std::string &name);
+
+ private:
+  CConfigFileSectionList sections_;
 };
+
+//------
 
 class CConfigFileSection {
   typedef std::list<CConfigFileNameVal *> CConfigFileNameValList;
-
- private:
-  std::string            name_;
-  CConfigFileNameValList name_values_;
 
  public:
   CConfigFileSection(const std::string &name);
@@ -59,13 +57,15 @@ class CConfigFileSection {
   std::string getName() { return name_; }
 
   bool isName(const std::string &name) { return name_ == name; }
+
+ private:
+  std::string            name_;
+  CConfigFileNameValList name_values_;
 };
 
-class CConfigFileNameVal {
- private:
-  std::string name_;
-  std::string value_;
+//------
 
+class CConfigFileNameVal {
  public:
   CConfigFileNameVal(const std::string &name, const std::string &value);
 
@@ -77,6 +77,10 @@ class CConfigFileNameVal {
   void setValue(const std::string &value) { value_ = value; }
 
   bool isName(const std::string &name) { return name_ == name; }
+
+ private:
+  std::string name_;
+  std::string value_;
 };
 
 #endif

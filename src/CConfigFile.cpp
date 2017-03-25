@@ -6,8 +6,6 @@
 #include <CEnv.h>
 #include <CFuncs.h>
 
-#include <algorithm>
-
 CConfigFile::
 CConfigFile()
 {
@@ -16,7 +14,8 @@ CConfigFile()
 CConfigFile::
 ~CConfigFile()
 {
-  for_each(sections_.begin(), sections_.end(), CDeletePointer());
+  for (auto &section : sections_)
+    delete section;
 }
 
 bool
@@ -248,7 +247,8 @@ CConfigFileSection(const std::string &name) : name_(name)
 CConfigFileSection::
 ~CConfigFileSection()
 {
-  for_each(name_values_.begin(), name_values_.end(), CDeletePointer());
+  for (auto &name_value : name_values_)
+    delete name_value;
 }
 
 CConfigFileNameVal *

@@ -7,8 +7,6 @@
 #include <CThrow.h>
 #include <CFuncs.h>
 
-#include <algorithm>
-
 CConfig::
 CConfig(const std::string &name) :
  name_(name)
@@ -41,58 +39,56 @@ CConfig(const std::string &name) :
 CConfig::
 ~CConfig()
 {
-  std::for_each(groups_.begin(), groups_.end(), CDeletePointer());
+  for (auto &group : groups_)
+    delete group;
 }
 
 void
 CConfig::
 save()
 {
-  CConfigGroupList::iterator pg1 = groups_.begin();
-  CConfigGroupList::iterator pg2 = groups_.end  ();
-
-  for ( ; pg1 != pg2; ++pg1)
-    (*pg1)->save();
+  for (auto &group : groups_)
+    group->save();
 }
 
 bool
 CConfig::
-getValue(const std::string &path, std::string &value)
+getValue(const std::string &path, std::string &value) const
 {
   return getValue(path, "", value);
 }
 
 bool
 CConfig::
-getValue(const std::string &path, bool *value)
+getValue(const std::string &path, bool *value) const
 {
   return getValue(path, "", value);
 }
 
 bool
 CConfig::
-getValue(const std::string &path, int *value)
+getValue(const std::string &path, int *value) const
 {
   return getValue(path, "", value);
 }
 
 bool
 CConfig::
-getValue(const std::string &path, double *value)
+getValue(const std::string &path, double *value) const
 {
   return getValue(path, "", value);
 }
 
 bool
 CConfig::
-getValue(const std::string &path, std::vector<std::string> &values)
+getValue(const std::string &path, std::vector<std::string> &values) const
 {
   return getValue(path, "", values);
 }
 
 bool
 CConfig::
-getValue(const std::string &path, const std::string &sectionName, std::string &value)
+getValue(const std::string &path, const std::string &sectionName, std::string &value) const
 {
   std::string::size_type pos = path.rfind("/");
 
@@ -111,7 +107,7 @@ getValue(const std::string &path, const std::string &sectionName, std::string &v
 
 bool
 CConfig::
-getValue(const std::string &path, const std::string &sectionName, bool *value)
+getValue(const std::string &path, const std::string &sectionName, bool *value) const
 {
   std::string svalue;
 
@@ -126,7 +122,7 @@ getValue(const std::string &path, const std::string &sectionName, bool *value)
 
 bool
 CConfig::
-getValue(const std::string &path, const std::string &sectionName, int *value)
+getValue(const std::string &path, const std::string &sectionName, int *value) const
 {
   std::string svalue;
 
@@ -141,7 +137,7 @@ getValue(const std::string &path, const std::string &sectionName, int *value)
 
 bool
 CConfig::
-getValue(const std::string &path, const std::string &sectionName, double *value)
+getValue(const std::string &path, const std::string &sectionName, double *value) const
 {
   std::string svalue;
 
@@ -156,7 +152,8 @@ getValue(const std::string &path, const std::string &sectionName, double *value)
 
 bool
 CConfig::
-getValue(const std::string &path, const std::string &sectionName, std::vector<std::string> &values)
+getValue(const std::string &path, const std::string &sectionName,
+         std::vector<std::string> &values) const
 {
   std::string svalue;
 
@@ -254,7 +251,7 @@ setValue(const std::string &path, const std::string &sectionName,
 bool
 CConfig::
 getValue(const std::string &groupPath, const std::string &sectionName,
-         const std::string &name, std::string &value)
+         const std::string &name, std::string &value) const
 {
   CConfigGroup *group = getGroupFromPath(groupPath);
 
@@ -329,7 +326,7 @@ getSectionValueNames(const std::string &groupPath, const std::string &sectionNam
 
 CConfigGroup *
 CConfig::
-getGroupFromPath(const std::string &groupPath)
+getGroupFromPath(const std::string &groupPath) const
 {
   CConfigGroup *group = NULL;
 
@@ -361,19 +358,18 @@ getGroupFromPath(const std::string &groupPath)
 
 CConfigGroup *
 CConfig::
-getGroup(const std::string &groupName)
+getGroup(const std::string &groupName) const
 {
-  CConfigGroupList::iterator pg1 = groups_.begin();
-  CConfigGroupList::iterator pg2 = groups_.end  ();
-
-  for ( ; pg1 != pg2; ++pg1) {
-    if ((*pg1)->isName(groupName))
-      return *pg1;
+  for (auto &group : groups_) {
+    if (group->isName(groupName))
+      return group;
   }
+
+  CConfig *th = const_cast<CConfig *>(this);
 
   CConfigGroup *group = new CConfigGroup(path_, groupName, groupName);
 
-  groups_.push_back(group);
+  th->groups_.push_back(group);
 
   return group;
 }
@@ -407,9 +403,11 @@ CConfigGroup::
 {
   config_file_->writeFile(file_);
 
-  std::for_each(groups_.begin(), groups_.end(), CDeletePointer());
+  for (auto &group : groups_)
+    delete group;
 
-  std::for_each(sections_.begin(), sections_.end(), CDeletePointer());
+  for (auto &section : sections_)
+    delete section;
 }
 
 void
@@ -418,56 +416,49 @@ save()
 {
   config_file_->writeFile(file_);
 
-  CConfigGroupList::iterator pg1 = groups_.begin();
-  CConfigGroupList::iterator pg2 = groups_.end  ();
-
-  for ( ; pg1 != pg2; ++pg1)
-    (*pg1)->save();
+  for (auto &group : groups_)
+    group->save();
 }
 
 CConfigGroup *
 CConfigGroup::
-getGroup(const std::string &groupName)
+getGroup(const std::string &groupName) const
 {
-  CConfigGroupList::iterator pg1 = groups_.begin();
-  CConfigGroupList::iterator pg2 = groups_.end  ();
-
-  for ( ; pg1 != pg2; ++pg1) {
-    if ((*pg1)->isName(groupName))
-      return *pg1;
+  for (auto &group : groups_) {
+    if (group->isName(groupName))
+      return group;
   }
 
-  CConfigGroup *group =
-    new CConfigGroup(path_, groupName, hierName_ + "/" + groupName);
+  CConfigGroup *th = const_cast<CConfigGroup *>(this);
 
-  groups_.push_back(group);
+  CConfigGroup *group = new CConfigGroup(path_, groupName, hierName_ + "/" + groupName);
+
+  th->groups_.push_back(group);
 
   return group;
 }
 
 CConfigSection *
 CConfigGroup::
-getSection(const std::string &sectionName)
+getSection(const std::string &sectionName) const
 {
-  CConfigSectionList::iterator ps1 = sections_.begin();
-  CConfigSectionList::iterator ps2 = sections_.end  ();
-
-  for ( ; ps1 != ps2; ++ps1) {
-    if ((*ps1)->isName(sectionName))
-      return *ps1;
+  for (auto &section : sections_) {
+    if (section->isName(sectionName))
+      return section;
   }
 
-  CConfigSection *section =
-    new CConfigSection(sectionName, config_file_);
+  CConfigGroup *th = const_cast<CConfigGroup *>(this);
 
-  sections_.push_back(section);
+  CConfigSection *section = new CConfigSection(sectionName, config_file_);
+
+  th->sections_.push_back(section);
 
   return section;
 }
 
 bool
 CConfigGroup::
-getValue(const std::string &sectionName, const std::string &name, std::string &value)
+getValue(const std::string &sectionName, const std::string &name, std::string &value) const
 {
   CConfigSection *section = getSection(sectionName);
 
@@ -539,7 +530,7 @@ CConfigSection::
 
 bool
 CConfigSection::
-getValue(const std::string &name, std::string &value)
+getValue(const std::string &name, std::string &value) const
 {
   return config_file_->getValue(name_, name, value);
 }
@@ -553,7 +544,7 @@ setValue(const std::string &name, const std::string &value)
 
 bool
 CConfigSection::
-getValueNames(std::vector<std::string> &names)
+getValueNames(std::vector<std::string> &names) const
 {
   return config_file_->getSectionValueNames(name_, names);
 }
