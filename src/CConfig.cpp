@@ -328,7 +328,7 @@ CConfigGroup *
 CConfig::
 getGroupFromPath(const std::string &groupPath) const
 {
-  CConfigGroup *group = NULL;
+  CConfigGroup *group = nullptr;
 
   std::string groupPath1 = groupPath;
 
@@ -338,7 +338,7 @@ getGroupFromPath(const std::string &groupPath) const
     std::string lgroupPath = groupPath1.substr(0, pos);
     std::string rgroupPath = groupPath1.substr(pos + 1);
 
-    if (group == NULL)
+    if (! group)
       group = getGroup(lgroupPath);
     else
       group = group->getGroup(lgroupPath);
@@ -348,7 +348,7 @@ getGroupFromPath(const std::string &groupPath) const
     pos = groupPath1.find("/");
   }
 
-  if (group == NULL)
+  if (! group)
     group = getGroup(groupPath1);
   else
     group = group->getGroup(groupPath1);

@@ -27,7 +27,7 @@ readFile(const std::string &fileName)
   if (! file.exists())
     return false;
 
-  CConfigFileSection *ini_section = NULL;
+  CConfigFileSection *ini_section = nullptr;
 
   std::string line;
 
@@ -71,7 +71,7 @@ readFile(const std::string &fileName)
           }
         }
 
-        if (ini_section == NULL)
+        if (! ini_section)
           ini_section = addSection("");
 
         ini_section->addNameValue(name, value);
@@ -106,12 +106,12 @@ getValue(const std::string &sectionName, const std::string &name, std::string &v
 {
   CConfigFileSection *ini_section = addSection(sectionName);
 
-  if (ini_section == NULL)
+  if (! ini_section)
     return false;
 
   CConfigFileNameVal *ini_name_value = ini_section->getNameValue(name);
 
-  if (ini_name_value == NULL) {
+  if (! ini_name_value) {
     ini_section->addNameValue(name, value);
 
     return false;
@@ -200,7 +200,7 @@ addSection(const std::string &name)
 {
   CConfigFileSection *ini_section = getSection(name);
 
-  if (ini_section == NULL) {
+  if (! ini_section) {
     ini_section = new CConfigFileSection(name);
 
     sections_.push_back(ini_section);
@@ -220,7 +220,7 @@ getSection(const std::string &name)
     if ((*p1)->isName(name))
       return *p1;
 
-  return NULL;
+  return nullptr;
 }
 
 bool
@@ -229,7 +229,7 @@ getSectionValueNames(const std::string &sectionName, std::vector<std::string> &n
 {
   CConfigFileSection *section = getSection(sectionName);
 
-  if (section == NULL)
+  if (! section)
     return false;
 
   section->getValueNames(names);
@@ -257,7 +257,7 @@ addNameValue(const std::string &name, const std::string &value)
 {
   CConfigFileNameVal *ini_name_value = getNameValue(name);
 
-  if (ini_name_value == NULL) {
+  if (! ini_name_value) {
     ini_name_value = new CConfigFileNameVal(name, value);
 
     name_values_.push_back(ini_name_value);
@@ -279,7 +279,7 @@ getNameValue(const std::string &name)
     if ((*p1)->isName(name))
       return *p1;
 
-  return NULL;
+  return nullptr;
 }
 
 bool
