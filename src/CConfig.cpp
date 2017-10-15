@@ -408,6 +408,8 @@ CConfigGroup::
 
   for (auto &section : sections_)
     delete section;
+
+  delete config_file_;
 }
 
 void

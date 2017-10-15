@@ -107,7 +107,7 @@ class CConfigGroup {
   std::string         file_;
   CConfigGroupList    groups_;
   CConfigSectionList  sections_;
-  CConfigFile        *config_file_ { 0 };
+  CConfigFile        *config_file_ { nullptr };
 };
 
 //------
@@ -125,8 +125,8 @@ class CConfigSection {
   bool getValueNames(std::vector<std::string> &names) const;
 
  private:
-  std::string           name_;
-  CAutoPtr<CConfigFile> config_file_;
+  std::string  name_;
+  CConfigFile *config_file_ { nullptr };
 };
 
 #endif
