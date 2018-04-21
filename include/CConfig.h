@@ -101,13 +101,13 @@ class CConfigGroup {
   CConfigGroup &operator=(const CConfigGroup &rhs);
 
  private:
-  std::string         path_;
-  std::string         name_;
-  std::string         hierName_;
-  std::string         file_;
-  CConfigGroupList    groups_;
-  CConfigSectionList  sections_;
-  CConfigFile        *config_file_ { nullptr };
+  std::string        path_;
+  std::string        name_;
+  std::string        hierName_;
+  std::string        file_;
+  CConfigGroupList   groups_;
+  CConfigSectionList sections_;
+  CConfigFile*       config_file_ { nullptr };
 };
 
 //------
@@ -126,7 +126,7 @@ class CConfigSection {
 
  private:
   std::string  name_;
-  CConfigFile *config_file_ { nullptr };
+  CConfigFile* config_file_ { nullptr };
 };
 
 #endif
