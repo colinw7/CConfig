@@ -1,8 +1,6 @@
 #ifndef CCONFIG_H
 #define CCONFIG_H
 
-#include <CAutoPtr.h>
-
 #include <string>
 #include <vector>
 #include <list>
