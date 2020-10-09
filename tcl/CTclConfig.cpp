@@ -1,7 +1,8 @@
-#include "std_c++.h"
-#include "CTclApp/CTclApp.h"
-#include "CConfig/CConfig.h"
-#include "CTclConfig.h"
+#include <std_c++.h>
+#include <CTclApp.h>
+#include <CTclAppCommand.h>
+#include <CConfig.h>
+#include <CTclConfig.h>
 
 #include "CTclConfig.k"
 
