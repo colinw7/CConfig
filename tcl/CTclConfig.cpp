@@ -50,7 +50,7 @@ addCommands()
   new CTclConfigSetNameValue(this);
 }
 
-string
+std::string
 CTclConfig::
 getTclStr()
 {
@@ -59,7 +59,7 @@ getTclStr()
 
 void
 CTclConfig::
-setApplication(const string &name)
+setApplication(const std::string &name)
 {
   if (config_ != NULL)
     delete config_;
@@ -73,7 +73,7 @@ setApplication(const string &name)
 
 void
 CTclConfig::
-setNameValue(const string &name, const string &value)
+setNameValue(const std::string &name, const std::string &value)
 {
   config_->setValue(name, "", value);
 
@@ -82,19 +82,19 @@ setNameValue(const string &name, const string &value)
 
 void
 CTclConfig::
-addGroups(const string &path, const string &groupName)
+addGroups(const std::string &path, const std::string &groupName)
 {
-  vector<string> groupNames, groupPaths;
+  std::vector<std::string> groupNames, groupPaths;
 
   if (! config_->getGroups(path, groupNames, groupPaths))
     return;
 
   addSections(path, groupName);
 
-  vector<string>::iterator pgroupNames1 = groupNames.begin();
-  vector<string>::iterator pgroupNames2 = groupNames.end  ();
-  vector<string>::iterator pgroupPaths1 = groupPaths.begin();
-  vector<string>::iterator pgroupPaths2 = groupPaths.end  ();
+  auto pgroupNames1 = groupNames.begin();
+  auto pgroupNames2 = groupNames.end  ();
+  auto pgroupPaths1 = groupPaths.begin();
+  auto pgroupPaths2 = groupPaths.end  ();
 
   for ( ; pgroupNames1 != pgroupNames2 && pgroupPaths1 != pgroupPaths2;
         ++pgroupNames1, ++pgroupPaths1) {
@@ -109,21 +109,21 @@ addGroups(const string &path, const string &groupName)
 
 void
 CTclConfig::
-addSections(const string &path, const string &groupName)
+addSections(const std::string &path, const std::string &groupName)
 {
-  vector<string> sections;
+  std::vector<std::string> sections;
 
   if (! config_->getSections(path, sections))
     return;
 
-  string path1;
+  std::string path1;
 
-  vector<string>::iterator psection1 = sections.begin();
-  vector<string>::iterator psection2 = sections.end  ();
+  auto psection1 = sections.begin();
+  auto psection2 = sections.end  ();
 
   for ( ; psection1 != psection2; ++psection1) {
     if (*psection1 != "") {
-      string section1 = "[" + *psection1 + "]";
+      std::string section1 = "[" + *psection1 + "]";
 
       if (path != "")
         path1 = path + "/" + section1;
@@ -142,24 +142,24 @@ addSections(const string &path, const string &groupName)
 
 void
 CTclConfig::
-addSectionNameValues(const string &path, const string &groupName,
-                     const string &sectionName)
+addSectionNameValues(const std::string &path, const std::string &groupName,
+                     const std::string &sectionName)
 {
-  vector<string> names;
+  std::vector<std::string> names;
 
   if (! config_->getSectionValueNames(path, sectionName, names))
     return;
 
-  string path1, path2, value;
+  std::string path1, path2, value;
 
-  vector<string>::iterator pname1 = names.begin();
-  vector<string>::iterator pname2 = names.end  ();
+  auto pname1 = names.begin();
+  auto pname2 = names.end  ();
 
   for ( ; pname1 != pname2; ++pname1) {
     config_->getValue(path, sectionName, *pname1, value);
 
     if (sectionName != "") {
-      string section1 = "[" + sectionName + "]";
+      std::string section1 = "[" + sectionName + "]";
 
       if (path != "")
         path1 = path + "/" + section1;
