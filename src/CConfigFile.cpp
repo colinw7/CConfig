@@ -34,7 +34,7 @@ readFile(const std::string &fileName)
   while (file.readLine(line)) {
     line = CStrUtil::stripSpaces(line);
 
-    int len = line.size();
+    uint len = uint(line.size());
 
     if (len <= 0)
       continue;
@@ -134,7 +134,7 @@ getValue(const std::string &sectionName, const std::string &name, int &value)
   if (! CStrUtil::isInteger(str))
     return false;
 
-  value = CStrUtil::toInteger(str);
+  value = int(CStrUtil::toInteger(str));
 
   return true;
 }

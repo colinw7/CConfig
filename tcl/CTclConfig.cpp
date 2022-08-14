@@ -191,7 +191,7 @@ bool
 CTclConfigSetApplication::
 proc(int, const char **argv)
 {
-  config_->setApplication((char *) argv[1]);
+  config_->setApplication(const_cast<char *>(argv[1]));
 
   return true;
 }
@@ -200,7 +200,7 @@ bool
 CTclConfigSetNameValue::
 proc(int, const char **argv)
 {
-  config_->setNameValue((char *) argv[1], (char *) argv[2]);
+  config_->setNameValue(const_cast<char *>(argv[1]), const_cast<char *>(argv[2]));
 
   return true;
 }
