@@ -12,9 +12,9 @@ class CTclConfig : public CTclApp {
                             const std::string &sectionName);
 
  protected:
-  void addCommands();
+  void addCommands() override;
 
-  std::string getTclStr();
+  std::string getTclStr() override;
 
  private:
   CConfig *config_ { nullptr };
